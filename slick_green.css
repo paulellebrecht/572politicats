@@ -1,0 +1,65 @@
+
+/*Color style for this set of pages comes from: 
+  http://www.colourlovers.com/palette/1953910/I_Understand*/
+body {
+    font-family: helvetica, optima, cochin, arial, sans-serif;
+    background-color: #FFFFFF;
+    color: #5D5153;
+}
+a {
+	color: #5D5153;
+}
+
+#header h1 a {
+	text-decoration: none;
+	font-size: 275%;
+}
+#header a {
+    color: #FFFFFF;
+	font-size: 125%;
+}
+h1, h2, h3, h4 {
+    margin-bottom: 0;
+}
+#header {
+    background-color: #A7CD44;
+    height: 100%;
+    overflow:hidden;
+    padding: 2%;
+    margin-top: 1%;
+    
+    border-top: 7px solid #768A88;     
+    border-bottom: 10px solid #665C5D;
+    
+    vertical-align: -50px;
+    
+}
+#header h1 {
+    font-size: 24px;
+    float: left;
+    vertical-align: middle;
+    margin: 0;
+    padding: 0 0 0 .3em;
+}
+#header li {
+    font-size: 17px;
+    display: inline;
+    padding: .5em;
+}
+#header ul {
+    list-style: none;
+    text-align: right;
+    float:right;
+    vertical-align: middle;
+    margin: 0;
+    padding: 0;
+}
+#header li a.selected {
+    text-decoration: none;
+}
+
+#content {
+	margin-right: 15%;
+	margin-left: 10%;
+}
+
