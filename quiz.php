@@ -1,6 +1,76 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
+<?php 
+    // Gain access to DB
+    require_once "db.php";
+    // Initialize session for page
+    session_start();
+
+    // Need to check whether the user came to this page because of clicking the
+    // link from the index page or because of the form submission in this page.
+    if ( isset($_POST['Submit'])) 
+    {
+        // Came to this page because of the form submission.
+
+    	////////////////////////////////////START WORKING HERE ////////////////////////////////////////
+        // Safeguard entered values 
+        $make = trim(mysql_real_escape_string($_POST['txtMake']));
+        $model = trim(mysql_real_escape_string($_POST['txtModel']));
+        $year = trim(mysql_real_escape_string($_POST['txtYear']));
+        $miles = trim(mysql_real_escape_string($_POST['txtMiles']));
+        $price = trim(mysql_real_escape_string($_POST['txtPrice']));
+        
+        // Various checks of entered values
+        if ( empty($make) )
+            // Value for make is an empty string
+            // Set error message to display in index page
+            $_SESSION['sesError'] = "Add Error: Make cannot be an empty string";
+        elseif ( empty($model) )
+            // Value for model is an empty string
+            // Set error message to display in index page
+            $_SESSION['sesError'] = "Add Error: Model cannot be an empty string";
+        elseif ( empty($year) )
+            // Value for year is an empty string
+            // Set error message to display in index page
+            $_SESSION['sesError'] = "Add Error: Year cannot be empty";
+        elseif ( is_numeric($year) === False )
+            // Value for year is not numeric
+            // Set error message to display in index page
+            $_SESSION['sesError'] = "Add Error: Year must be an interger";
+        elseif ( empty($miles) )
+            // Value for miles is an empty string
+            // Set error message to display in index page
+            $_SESSION['sesError'] = "Add Error: Miles cannot be empty";
+        elseif ( is_numeric($miles) === False ) 
+            // Value for miles is not numeric
+            // Set error message to display in index page
+            $_SESSION['sesError'] = "Add Error: Miles must be an interger";
+        elseif ( empty($price) )
+            // Value for price is an empty string
+            // Set error message to display in index page
+            $_SESSION['sesError'] = "Add Error: Price cannot be empty";
+        elseif ( is_numeric($price) === False ) 
+            // Value for price is not numeric
+            // Set error message to display in index page
+            $_SESSION['sesError'] = "Add Error: Prices must be an interger";
+        else 
+        {
+            // Everything is ok so insert new record
+            $sql = "INSERT INTO cars (make, model, year, miles, price)
+                    VALUES ('$make', '$model', $year, $miles, $price)";
+            mysql_query($sql);
+            
+            // Set message to display in index page
+            $_SESSION['sesMessage'] = 'Record Added';
+        }
+        // Redirect to index page
+        header( 'Location: results.php' );        
+        // Suspend further execution of this page and wait for redirect
+        return;
+    }
+?>
+    
 <html xmlns="http://www.w3.org/1999/xhtml">
  <head>
    <title> POLITICATS!
@@ -34,7 +104,7 @@
 
 <?php
     // Create sql command
-    $sql = "SELECT id, make, model, year, miles, price FROM cars";
+    $sql = "SELECT id, text FROM questions";
     // Retrieve all records
     $result = mysql_query($sql);
     
@@ -44,36 +114,24 @@
         // Display one record per HTML row
 ?>
             <tr>
-                <td><?php echo(htmlentities($row[1])); ?></td>                
-                <td align="left"><?php echo(htmlentities($row[2])); ?></td> <!-- Column 2 in table = column 3 in SQL -->
-                <td align="center"><input type="radio" name=<?php echo(htmlentities($row[1])); ?> value="STdiagree"/></td> <!-- Column 3 in table = column 4 in SQL -->
-                <td align="center"><input type="radio" name=<?php echo(htmlentities($row[1])); ?> value="SWdiagree"/></td> <!-- Column 3 in table = column 4 in SQL -->
-                <td align="center"><input type="radio" name=<?php echo(htmlentities($row[1])); ?> value="Neutral"/></td> <!-- Column 3 in table = column 4 in SQL -->
-                <td align="center"><input type="radio" name=<?php echo(htmlentities($row[1])); ?> value="SWagree"/></td> <!-- Column 3 in table = column 4 in SQL -->
-                <td align="center"><input type="radio" name=<?php echo(htmlentities($row[1])); ?> value="STagree"/></td> <!-- Column 3 in table = column 4 in SQL -->
+                <td><?php echo($row[1]); ?></td>                
+                <td align="left"><?php echo($row[2]); ?></td> <!-- Column 2 in table = column 3 in SQL -->
+                <td align="center"><input type="radio" name=<?php echo($row[0]); ?> value="STdiagree"/></td> <!-- Column 3 in table = column 4 in SQL -->
+                <td align="center"><input type="radio" name=<?php echo($row[0]); ?> value="SWdiagree"/></td> <!-- Column 3 in table = column 4 in SQL -->
+                <td align="center"><input type="radio" name=<?php echo($row[0]); ?> value="Neutral"/></td> <!-- Column 3 in table = column 4 in SQL -->
+                <td align="center"><input type="radio" name=<?php echo($row[0]); ?> value="SWagree"/></td> <!-- Column 3 in table = column 4 in SQL -->
+                <td align="center"><input type="radio" name=<?php echo($row[0]); ?> value="STagree"/></td> <!-- Column 3 in table = column 4 in SQL -->
             </tr>
 <?php
     }
 ?>
-
-
-			
-			<tr>
-				<td>Governments, like households, shouldn't take on more debt by spending more than they earn</td>
-				<td></td>
-				<td><input type="radio" name="q1" value="disagree"/></td>
-				<td><input type="radio" name="q1" value="agree"/></td>
-				<td><input type="radio" name="q1" value="disagree"/></td>
-				<td><input type="radio" name="q1" value="agree"/></td>
-				<td><input type="radio" name="q1" value="disagree"/></td>
-			</tr>
-			<tr>
-				<td>Taxes are necessary because they pay for public services I appreciate like a police force, firefighters, and paved roads</td>
-				<td></td>
-				<td><input type="radio" name="q2" value="disagree"/></td>
-				<td><input type="radio" name="q2" value="agree"/></td>
-			</tr>
 		</table>
+
+		<form method="post">
+		<input type="submit" name="Submit" value="FIND OUT WHICH CAT YOU ARE LIKE!"/>
+		</form>
+
+
    </div>
  </body>
 </html>
