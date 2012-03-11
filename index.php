@@ -13,7 +13,6 @@
       <a href="index.php" accesskey="1"><img src="politicats_catface_transparent.png" alt="PC_Logo"  /></a>
       <ul>
         <li><a href="about_pc.html">About Politicats</a></li>
-        <li><a href="conferences.html">Conferences</a></li>
       </ul>
    </div>
 
@@ -44,10 +43,6 @@
 		axes (social and fiscal political scales) in order to help you visualize your political positions. 
 		Furthermore, after finishing the quiz you will see how you compare to our collection of Politicats: 
 		cats representing various political leaders.</p> 
-
-		<form method="LINK" action="quiz.php">
-		<input type="submit" value="TAKE THE QUIZ"/>
-		</form>
 
    </div>
  </body>
