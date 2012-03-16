@@ -1,50 +1,88 @@
--- phpMyAdmin SQL Dump
--- version 3.4.5
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Generation Time: Mar 10, 2012 at 12:35 AM
--- Server version: 5.5.16
--- PHP Version: 5.3.8
+-- Set up for Database: `politicats`
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
+-- Recreate database
+DROP DATABASE IF EXISTS politicats;
+CREATE DATABASE politicats;
+
+-- Enter database
+USE politicats;
 
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+-- Create user
+DROP USER 'quiz'@'localhost';
+GRANT ALL ON midterm.* TO 'quiz'@'localhost' IDENTIFIED BY 'password';
 
---
--- Database: `politicats`
---
+-- ------------------------ CREATING TABLES -------------------------
 
--- --------------------------------------------------------
+-- ------- Create Questions table
+-- This table will hold all of the questions of our quiz
+-- and the 'orientation' of those questions (liberal vs conservative)
+CREATE TABLE questions (
+    -- Question ID
+	id      INTEGER         NOT NULL    AUTO_INCREMENT,
+    -- Question Text
+	text    VARCHAR(256)    NOT NULL,
+  	-- What is the orientation (liberal or conservative) is this question on
+  	-- the fiscal scale
+    orientation_fiscal      INTEGER         NOT NULL,
+    orientation_social      INTEGER         NOT NULL,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB; 
 
---
--- Table structure for table `questions`
---
-
-CREATE TABLE IF NOT EXISTS `questions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `text` varchar(256) NOT NULL,
-  `orientation_fiscal` int(11) NOT NULL,
-  `orientation_social` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
-
---
--- Dumping data for table `questions`
---
-
-INSERT INTO `questions` (`id`, `text`, `orientation_fiscal`, `orientation_social`) VALUES
+-- Insert initial data: question text
+INSERT INTO questions (id, text, orientation_fiscal, orientation_social) VALUES
 (1, 'Governments, like households, shouldn''t take on more debt by spending more than they earn.', 1, 0),
 (2, 'Taxes are necessary because they pay for public services I appreciate like a police force, firefighters, and paved roads.', -1, 0),
 (3, 'If small business were unfettered by regulations, like minimum wage, they could create even more jobs', 1, 0),
 (4, 'It is more important for the Federal Reserve to focus on reducing inflation rather than lowering unemployment.', 1, 0),
 (5, 'High net wealth individuals should pay higher tax rates than lower income individuals.', -1, 0);
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+-- ------- Create users table
+-- This table will hold all of the uers's login and 
+-- demographic info
+CREATE TABLE users (
+    -- User ID
+	id		    INTEGER         NOT NULL    AUTO_INCREMENT,
+    name      	VARCHAR(30)     NOT NULL,
+    username    VARCHAR(15)     NOT NULL,
+    password    VARCHAR(30)     NOT NULL,
+    score_fis   FLOAT           NOT NULL,
+    score_soc   FLOAT           NOT NULL,
+    -- Foreign Key: Politicat 
+    politicat_id   INTEGER      NOT NULL,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB; 
+
+-- ------- Create results table
+-- This table will hold all of the results for the user of our quiz
+-- and the weights chosen for each question; this is done by mapping 
+-- one user to many questions in this particular table 
+CREATE TABLE answers (
+	id		        INTEGER         NOT NULL    AUTO_INCREMENT,
+    -- Foreign Key User ID
+	users_id        INTEGER         NOT NULL,
+  	-- The users answers to each question    <---------------------- if you've added more questions, insert more columns here
+	q1_value  		FLOAT           NOT NULL,
+	q1_weight 		FLOAT           NOT NULL,
+	q2_value  		FLOAT           NOT NULL,
+	q2_weight 		FLOAT           NOT NULL,
+	q3_value  		FLOAT           NOT NULL,
+	q3_weight 		FLOAT           NOT NULL,
+	q4_value  		FLOAT           NOT NULL,
+	q4_weight 		FLOAT           NOT NULL,
+	q5_value  		FLOAT           NOT NULL,
+	q5_weight 		FLOAT           NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB; 
+
+-- ------- Create politicats image table
+-- This table will hold all of the cat images we have 
+CREATE TABLE answers (
+	id		        INTEGER         NOT NULL    AUTO_INCREMENT,
+	catpic          VARCHAR(100)    NOT NULL,
+	scoreMin_fiscal FLOAT           NOT NULL,
+	scoreMax_fiscal FLOAT           NOT NULL,
+	scoreMin_social FLOAT           NOT NULL,
+	scoreMax_social FLOAT           NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE=InnoDB; 
