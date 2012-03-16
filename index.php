@@ -20,7 +20,7 @@
 		
 		<h1>Welcome to Politicats.org!</h1>
 
-		<form method="LINK" action="quiz.php">
+		<form method="post" action="quiz.php">
 		<input type="submit" value="TAKE THE QUIZ"/>
 		</form>
 		

@@ -1,70 +1,14 @@
 <?php
-    // Gain access to DB
-    require_once "db.php";
-    // Initialize session for page
-    session_start();
+    // Pull our initialization file
+    require_once "init.php";
 ?>
 <?php
-    
-	//What we're using to build the user's fiscal score
-	//Count counts the number of questions answered (for normalization)
-	$score = 0;
-	$count = 0;
-
-    // Create sql command: Want to pull our questions' orientation (lefty or righty)
-    $sql = "SELECT orientation_fiscal FROM questions";
-    // Retrieve all records
-    $result = mysql_query($sql);
-	
-	//If the user answered question 1 then calcuate the score with this information
-	//count increments
-	if ( isset($_SESSION['q1'] ) ) 
-    {
-    	$count = $count + 1;
-    	$row = mysql_fetch_row($result);  
-        $score = $score + ($_SESSION['q1'] * $row[0]);
-    }
-
-	//If the user answered question 2 then calcuate the score with this information
-	//count increments
-	if ( isset($_SESSION['q2'] ) ) 
-    {
-    	$count = $count + 1;
-    	$row = mysql_fetch_row($result);     	
-        $score = $score + ($_SESSION['q2'] * $row[0]);
-   	}
-    
-	//If the user answered question 3 then calcuate the score with this information
-	//count increments
-	if ( isset($_SESSION['q3'] ) ) 
-    {
-    	$count = $count + 1;
-    	$row = mysql_fetch_row($result);     	
-        $score = $score + ($_SESSION['q3'] * $row[0]);
-    	
-    }
-
-	//If the user answered question 3 then calcuate the score with this information
-	//count increments
-	if ( isset($_SESSION['q4'] ) ) 
-    {
-    	$count = $count + 1;
-    	$row = mysql_fetch_row($result);     	
-        $score = $score + ($_SESSION['q4'] * $row[0]);
-    	
-    }
-
-	//If the user answered question 3 then calcuate the score with this information
-	//count increments
-	if ( isset($_SESSION['q5'] ) ) 
-    {
-    	$count = $count + 1;
-    	$row = mysql_fetch_row($result);     	
-        $score = $score + ($_SESSION['q5'] * $row[0]);    	
-    }    
-	
-    $userscore = $score/$count;
     $pctmatch = abs($userscore*100);
+    
+    $currID = $_SESSION['currID'];
+    $fis_score = $_SESSION['fis_score'];
+    $soc_score = $_SESSION['soc_score'];
+    
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -90,9 +34,13 @@
 		<h2>You're a <?php echo $pctmatch;?>% Match to: </h2>
 		
 <?php 
-	if($userscore < 0)
+
+	echo ("currID: " . $currID . " fis_score: " . $fis_score . " soc_score: " . $soc_score); 
+	
+
+	if($fis_score < 0)
 		echo '<p><h3>Chairman Meow</h3><img src="ChairmanMeow2.png"></p>';
-	elseif($userscore > 0)
+	elseif($fis_score > 0)
 		echo '<p><h3>Feline Palin</h3><img src="Palin_cat.png"></p>';
 	else 
 		echo '<p><h3>You are undecided!</h3></p>';	

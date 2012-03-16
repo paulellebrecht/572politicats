@@ -10,7 +10,7 @@ USE politicats;
 
 -- Create user
 DROP USER 'quiz'@'localhost';
-GRANT ALL ON midterm.* TO 'quiz'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL ON politicats.* TO 'quiz'@'localhost' IDENTIFIED BY 'password';
 
 -- ------------------------ CREATING TABLES -------------------------
 
@@ -77,7 +77,7 @@ CREATE TABLE answers (
 
 -- ------- Create politicats image table
 -- This table will hold all of the cat images we have 
-CREATE TABLE answers (
+CREATE TABLE catpics (
 	id		        INTEGER         NOT NULL    AUTO_INCREMENT,
 	catpic          VARCHAR(100)    NOT NULL,
 	scoreMin_fiscal FLOAT           NOT NULL,
