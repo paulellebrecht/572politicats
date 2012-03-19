@@ -21,6 +21,7 @@ require_once "init.php";
 		$q3 = $_POST['3'];
         $q4 = $_POST['4'];
         $q5 = $_POST['5'];
+        //NEED TO CONVERT TEXT INTO FLOAT VALUES <-------------------------- DO THIS!!!
         
         // Set the values of the weights set for the various questions responses as session values
         //$_SESSION['w1'] = $_POST['weight_1'];
@@ -43,8 +44,8 @@ require_once "init.php";
 		$count = 0;
 
 		//Find out what the orientation of each question is 
-	    //$sql = "SELECT orientation_fiscal, orientation_fiscal FROM questions";
-	    $sql = "SELECT * FROM questions";
+	    $sql = "SELECT orientation_fiscal, orientation_social FROM questions";
+	    //$sql = "SELECT * FROM questions";
 	    // Retrieve all records
     	$orientation = mysql_query($sql);
     	$_SESSION['orient'] = $orientation[0][0];
@@ -56,11 +57,12 @@ require_once "init.php";
     	for ($i=0; $i<sizeof($q_array); $i++) {
     		
     		//orientation array is multi dimensional, so need to brake it out:
-    		$row = $orientation[$i];
+    		$row = mysql_fetch_row($orientation);
     		//for fiscal orientation, we'll always want the first column of the array
     		
-    		$fis_score = $fis_score + ($q_arr[$i] * $w_arr[$i] * $row[0]);
+    		$fis_score = $fis_score + ($q_array[$i] * $w_array[$i] * $row[0]);
     		$count = $count + 1;
+    		//echo "Echo in code" .$fis_score . " " . $count; //<--------------------------- Echos to print to screen
 		}
 		
 		$fis_score = $fis_score/$count;
@@ -72,7 +74,7 @@ require_once "init.php";
     		$row = $orientation[$j];
     		//for fiscal orientation, we'll always want the first column of the array
     		
-    		$soc_score = $soc_score + ($q_arr[$j] * $w_arr[$j] * $row[1]);
+    		$soc_score = $soc_score + ($q_array[$j] * $w_array[$j] * $row[1]);
     		$_SESSION['social'] = $soc_score;
 		}
 		
@@ -151,8 +153,7 @@ require_once "init.php";
 /////////////////////   for testing: printing to screen   //////////////////
 /////////////////////////////////////////////////////////////////////////    
     //echo "HERE I A AM fis_score: " . $fis_score;
-	echo "the social score from session" . $_SESSION['social'];
-    echo "orientation array" . $_SESSION['orient'];
+	echo "the fiscal score from session" . $_SESSION['fis_score'];
     
 /////////////////////////////////////////////////////////////////////////    
     // Iterate for each row retrieved from database
