@@ -3,8 +3,6 @@
     require_once "init.php";
 ?>
 <?php
-    $pctmatch = abs($userscore*100);
-    
     $currID = $_SESSION['currID'];
     $fis_score = $_SESSION['fis_score'];
     $soc_score = $_SESSION['soc_score'];
@@ -20,6 +18,35 @@
    </title>
    <link href="slick_green.css" rel="stylesheet"
          type="text/css" />
+
+	<!-- JAVASCRIPT FOR GOOGLE CHART -->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+
+      <!-- THIS IS WHERE THEY ARE ADDING DATA TO THE DATATABLE -->
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('number', 'Fiscal');
+        data.addColumn('number', 'Social');
+        data.addRows([
+          [<?php echo $fis_score?>, <?php echo $soc_score?>],
+        ]);
+
+        var options = {
+          title: 'Political Spectrum Plot',
+          hAxis: {title: 'Fiscal', minValue: -1, maxValue: 1},
+          vAxis: {title: 'Social', minValue: -1, maxValue: 1},
+          legend: 'none'
+        };
+
+        var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+
+
  </head>
  <body>
    <div id="header">
@@ -30,8 +57,11 @@
    </div>
 
    <div id="bodycontent">
+   
+   <!-- JAVASCRIPT FOR GOOGLE CHART -->
+   <div id="chart_div" style="width: 500px; height: 500px;"></div>
 
-		<h2>You're a <?php echo $pctmatch;?>% Match to: </h2>
+		<h2>Your fiscal score is: <?php echo $fis_score;?>. You are a match for: </h2>
 		
 <?php 
 

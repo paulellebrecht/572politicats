@@ -31,11 +31,16 @@ CREATE TABLE questions (
 
 -- Insert initial data: question text
 INSERT INTO questions (id, text, orientation_fiscal, orientation_social) VALUES
-(1, 'Governments, like households, shouldn''t take on more debt by spending more than they earn.', 1, 0),
-(2, 'Taxes are necessary because they pay for public services I appreciate like a police force, firefighters, and paved roads.', -1, 0),
+(1, 'Governments should reduce spending and not run a deficit', 1, 0),
+(2, 'People should pay taxes to create greater economic equality between people', -1, 0),
 (3, 'If small business were unfettered by regulations, like minimum wage, they could create even more jobs', 1, 0),
 (4, 'It is more important for the Federal Reserve to focus on reducing inflation rather than lowering unemployment.', 1, 0),
-(5, 'High net wealth individuals should pay higher tax rates than lower income individuals.', -1, 0);
+(5, 'High net wealth individuals should pay higher tax rates than lower income individuals', -1, 0),
+(6, 'People should have the right to an abortion', 0, -1), 
+(7, 'Illegal immigrants should be sent back to their home country', 0, 1),
+(8, 'Gay marriage should be legal in every state', 0, -1), 
+(9, 'Prostitution between consenting adults should be illegal', 0, 1), 
+(10, 'Marijuana use should be decriminalized', 0, -1);
 
 -- ------- Create users table
 -- This table will hold all of the uers's login and 
@@ -72,6 +77,16 @@ CREATE TABLE answers (
 	q4_weight 		FLOAT           NOT NULL,
 	q5_value  		FLOAT           NOT NULL,
 	q5_weight 		FLOAT           NOT NULL,
+	q6_value  		FLOAT           NOT NULL,
+	q6_weight 		FLOAT           NOT NULL,
+	q7_value  		FLOAT           NOT NULL,
+	q7_weight 		FLOAT           NOT NULL,
+	q8_value  		FLOAT           NOT NULL,
+	q8_weight 		FLOAT           NOT NULL,
+	q9_value  		FLOAT           NOT NULL,
+	q9_weight 		FLOAT           NOT NULL,
+	q10_value  		FLOAT           NOT NULL,
+	q10_weight 		FLOAT           NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB; 
 

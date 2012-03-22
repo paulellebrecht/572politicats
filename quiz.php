@@ -21,6 +21,11 @@ require_once "init.php";
 		$q3 = $_POST['3'];
         $q4 = $_POST['4'];
         $q5 = $_POST['5'];
+        $q6 = $_POST['6'];
+        $q7 = $_POST['7'];
+		$q8 = $_POST['8'];
+        $q9 = $_POST['9'];
+        $q10 = $_POST['10'];
         //NEED TO CONVERT TEXT INTO FLOAT VALUES <-------------------------- DO THIS!!!
         
         // Set the values of the weights set for the various questions responses as session values
@@ -35,13 +40,19 @@ require_once "init.php";
 		$w3 = $_POST['weight_3'];
         $w4 = $_POST['weight_4'];
         $w5 = $_POST['weight_5'];
+        $w6 = $_POST['weight_6'];
+        $w7 = $_POST['weight_7'];
+		$w8 = $_POST['weight_8'];
+        $w9 = $_POST['weight_9'];
+        $w10 = $_POST['weight_10'];
         //System value for current date and time - will use to find our Anonymous users later
         
 		//What we're using to build the user's fiscal score
 		//Count counts the number of questions answered (for normalization)
 		$fis_score = 0;
 		$soc_score = 0;
-		$count = 0;
+		$fis_count = 0;
+		$soc_count = 0;		
 
 		//Find out what the orientation of each question is 
 	    $sql = "SELECT orientation_fiscal, orientation_social FROM questions";
@@ -50,8 +61,8 @@ require_once "init.php";
     	$orientation = mysql_query($sql);
     	$_SESSION['orient'] = $orientation[0][0];
  		
-        $q_array = array($q1, $q2, $q3, $q4, $q5);
-		$w_array = array($w1, $w2, $w3, $w4, $w5);
+        $q_array = array($q1, $q2, $q3, $q4, $q5, $q6, $q7, $q8, $q9, $q10);
+		$w_array = array($w1, $w2, $w3, $w4, $w5, $w6, $w7, $w8, $w9, $w10);
 		
 		//Looping to calculate the fiscal score
     	for ($i=0; $i<sizeof($q_array); $i++) {
@@ -61,26 +72,17 @@ require_once "init.php";
     		//for fiscal orientation, we'll always want the first column of the array
     		
     		$fis_score = $fis_score + ($q_array[$i] * $w_array[$i] * $row[0]);
-    		$count = $count + 1;
-    		//echo "Echo in code" .$fis_score . " " . $count; //<--------------------------- Echos to print to screen
-		}
+    		$soc_score = $soc_score + ($q_array[$i] * $w_array[$i] * $row[1]);
+    		$fis_count = $fis_count + abs($row[0]);
+    		$soc_count = $soc_count + abs($row[1]);
+    		//echo "<br>Echo in code: fis_score" .$fis_score . " fis_count" . $fis_count . "\n"; //<--------------------------- Echos to print to screen
+			//echo "Echo in code: soc_score" .$soc_score . " soc_count" . $soc_count . "\n";
+    	}
 		
-		$fis_score = $fis_score/$count;
-        
-		//Looping to calculate the social score
-    	for ($j=0; $j<sizeof($q_array); $j++) {
-    		
-    		//orientation array is multi dimensional, so need to brake it out:
-    		$row = $orientation[$j];
-    		//for fiscal orientation, we'll always want the first column of the array
-    		
-    		$soc_score = $soc_score + ($q_array[$j] * $w_array[$j] * $row[1]);
-    		$_SESSION['social'] = $soc_score;
-		}
+		$fis_score = $fis_score/$fis_count;
+        $soc_score = $soc_score/$soc_count;
 		
-		$soc_score = $soc_score/$count;
-		
-		// Create Dummy user to store Anonymous quizes
+		// Create Dummy user to store Anonymous quizzes
         // BEGIN and COMMIT are to prevent another user from jumping in (b/c we're so popular)
         $sql = "BEGIN;";
         mysql_query($sql);
@@ -95,8 +97,9 @@ require_once "init.php";
 
         // <-----------------------------------------------------------------  DOUBLE CHECK HERE IF ADD MORE QUESTIONS   
         // Everything is ok so insert new record
-        $sql = "INSERT INTO results (users_id, q1_value, q1_weight, q2_value, q2_weight, q3_value, q3_weight, q4_value, q4_weight, q5_value, q5_weight)
-                VALUES ($currID, $q1, $q2, $q3, $q4, $q5, $w1, $w2, $w3, $w4, $w5)";
+        $sql = "INSERT INTO answers (users_id, q1_value, q1_weight, q2_value, q2_weight, q3_value, q3_weight, q4_value, q4_weight, q5_value, q5_weight
+                                               q6_value, q6_weight, q7_value, q7_weight, q8_value, q8_weight, q9_value, q9_weight, q10_value, q10_weight)
+                VALUES ($currID, $q1, $q2, $q3, $q4, $q5, $q6, $q7, $q8, $q9, $q10, $w1, $w2, $w3, $w4, $w5, $w6, $w7, $w8, $w9, $w10)";
         mysql_query($sql);
             
         // Set message to display in index page
@@ -106,7 +109,7 @@ require_once "init.php";
         $_SESSION['soc_score'] = $soc_score;
         
         // Redirect to results page
-        header( 'Location: quiz.php' );
+        header( 'Location: results.php' );
         //header( 'Location: results.php' );        
         // Suspend further execution of this page and wait for redirect
         return;
@@ -149,13 +152,6 @@ require_once "init.php";
     // Retrieve all records
     $result = mysql_query($sql);
 
-/////////////////////////////////////////////////////////////////////////
-/////////////////////   for testing: printing to screen   //////////////////
-/////////////////////////////////////////////////////////////////////////    
-    //echo "HERE I A AM fis_score: " . $fis_score;
-	echo "the fiscal score from session" . $_SESSION['fis_score'];
-    
-/////////////////////////////////////////////////////////////////////////    
     // Iterate for each row retrieved from database
     while ( $row = mysql_fetch_row($result) ) 
     {
@@ -163,8 +159,8 @@ require_once "init.php";
 ?>
             <tr>
             	<!-- Building our table with the radio buttons and dropdown for weights -->
-                <td><?php echo($row[1]); ?></td>                
-                <td align="left"><?php echo($row[2]); ?></td> <!-- Empty column for spacing -->
+                <td><?php echo($row[1]); ?></td>   
+                <td></td>             
                 <td align="center"><input type="radio" name="<?php echo($row[0]); ?>" value="-1"/></td> 
                 <td align="center"><input type="radio" name="<?php echo($row[0]); ?>" value="-0.5"/></td> 
                 <td align="center"><input type="radio" name="<?php echo($row[0]); ?>" value="0"/></td> 
