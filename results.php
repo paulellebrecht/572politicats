@@ -83,6 +83,17 @@
 
  </head>
  <body>
+
+	<!-- facebook like button -->
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+  		var js, fjs = d.getElementsByTagName(s)[0];
+  		if (d.getElementById(id)) return;
+  		js = d.createElement(s); js.id = id;
+  		js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  		fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+
    <div id="header">
       <a href="index.php" accesskey="1"><img src="politicats_catface_transparent.png" alt="PC_Logo"  /></a>
       <ul>
@@ -105,7 +116,6 @@
 
    <!-- JAVASCRIPT FOR GOOGLE CHART -->
    <div id="chart_div" style="position:static; width: 500px; height: 500px;"></div>
-   </div>
    
    <br>
    <br>
@@ -135,26 +145,16 @@
    <br>
    <br>
    <br>
-   <br>
-   <br>
-   <br>
-   <br>
- 	<!-- facebook like button -->
-   <div class="fb-like" data-href="http://politicats.groups.si.umich.edu/" data-send="true" data-width="450" data-show-faces="true"></div>
-   <div id="fb-root">
-		<script>(function(d, s, id) {
-  			var js, fjs = d.getElementsByTagName(s)[0];
-  			if (d.getElementById(id)) return;
-  			js = d.createElement(s); js.id = id;
-  			js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=133977256677621";
-  			fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));
-		</script>
-		</div>
- 
+   
+   
  	<div align="center">
  	<h2>Want to see your Politicat on this site? <a href="mailto:mypoliticat@gmail.com?subject=See attached for my Politicat">Send it to us!</a></h2>
+	<br>
+	<div class="fb-like" data-href="http://politicats.groups.si.umich.edu" data-send="true" data-width="450" data-show-faces="true"></div>
 	</div>
+
+   </div>
+
    <br>
    <br>
    <br>
