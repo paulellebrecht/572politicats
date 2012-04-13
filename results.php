@@ -1,12 +1,42 @@
 <?php
     // Pull our initialization file
     require_once "init.php";
-?>
-<?php
+
     $currID = $_SESSION['currID'];
     $fis_score = $_SESSION['fis_score'];
     $soc_score = $_SESSION['soc_score'];
     
+?>
+
+<?php 
+	// Compare the current user to each of the politicats 
+    $sql = "SELECT * FROM politicat";
+    $result = mysql_query($sql);
+	$least_distance = 2;
+	// Iterate over each politicat
+	
+	//var_dump($result);
+	//die();
+	while ( $row = mysql_fetch_row($result) ) {
+		// calculate the distance between the current user and the current politicat
+		$current_distance = sqrt(($row[3]-$fis_score)*($row[3]-$fis_score) + ($row[4]-$soc_score)*($row[4]-$soc_score));
+		
+		//Debugging to check whether the calculations are correct
+		//echo ("distance to " . $row[1] . " is: " . $current_distance . "<br>");
+		//echo ($row[1] . " fiscal score: " . $row[3] . "<br>");
+		//echo ($row[1] . " social score: " . $row[4] . "<br>");
+		//echo ("Your fiscal score: " . $fis_score . "<br>");
+		//echo ("Your social score: " . $soc_score . "<br>");
+		
+		// If the current distance is less than the least distance, store the name/image of the current cat
+		if ($current_distance < $least_distance) {
+			$cat_pic = $row[1];
+			$cat_name = $row[2];
+			$cat_fisc = $row[3]; //cat's fiscal score for plotting on map
+			$cat_soc = $row[4]; //cat's social score for plotting on map
+			$least_distance = $current_distance;
+		}
+	}
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -16,6 +46,7 @@
  <head>
    <title> POLITICATS!
    </title>
+   
    <link href="slick_green.css" rel="stylesheet"
          type="text/css" />
 
@@ -28,24 +59,27 @@
       <!-- THIS IS WHERE THEY ARE ADDING DATA TO THE DATATABLE -->
       function drawChart() {
         var data = new google.visualization.DataTable();
-        data.addColumn('number', 'Fiscal');
-        data.addColumn('number', 'Social');
+
+        data.addColumn('number', 'Fiscal Score');
+        data.addColumn('number', 'You');
+        data.addColumn('number', 'Politicat Match');
         data.addRows([
-          [<?php echo $fis_score?>, <?php echo $soc_score?>],
-        ]);
+             [<?php echo $fis_score?>, <?php echo $soc_score?>, null],
+             [<?php echo $cat_fisc?>, null, <?php echo $cat_soc?>]
+             ]);
+
 
         var options = {
-          title: 'Political Spectrum Plot',
-          hAxis: {title: 'Fiscal', minValue: -1, maxValue: 1},
-          vAxis: {title: 'Social', minValue: -1, maxValue: 1},
-          legend: 'none'
+          title: 'Political Spectrum Chart',
+          titleTextStyle: {color: '#5D5153', fontSize: 19},
+          hAxis: {title: 'Liberal <----------------- FISCAL -----------> Conservative', minValue: -1, maxValue: 1, textPosition: 'none'},
+          vAxis: {title: 'Liberal <----------------- SOCIAL -----------> Conservative', minValue: -1, maxValue: 1, textPosition: 'none'},
         };
 
         var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
         chart.draw(data, options);
       }
     </script>
-
 
  </head>
  <body>
@@ -57,26 +91,76 @@
    </div>
 
    <div id="bodycontent">
-   
-   <!-- JAVASCRIPT FOR GOOGLE CHART -->
-   <div id="chart_div" style="width: 500px; height: 500px;"></div>
+   <!-- Save for debugging Your fiscal score is: <?php echo $fis_score;?>. Your social score is: <?php echo $fis_score;?>.  -->
+	<h2>You are a match for: </h2><br>   
 
-		<h2>Your fiscal score is: <?php echo $fis_score;?>. You are a match for: </h2>
-		
-<?php 
+	<div id="picture">
 
-	echo ("currID: " . $currID . " fis_score: " . $fis_score . " soc_score: " . $soc_score); 
-	
 
-	if($fis_score < 0)
-		echo '<p><h3>Chairman Meow</h3><img src="ChairmanMeow2.png"></p>';
-	elseif($fis_score > 0)
-		echo '<p><h3>Feline Palin</h3><img src="Palin_cat.png"></p>';
-	else 
-		echo '<p><h3>You are undecided!</h3></p>';	
+<?php	
+	echo ("<p><h3>" . $cat_name . "</h3><img src=" . $cat_pic);
 ?>		
-		
+		width="500" height="auto"></p> 
+	</div>
 
+   <!-- JAVASCRIPT FOR GOOGLE CHART -->
+   <div id="chart_div" style="position:static; width: 500px; height: 500px;"></div>
    </div>
+   
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+ 	<!-- facebook like button -->
+   <div class="fb-like" data-href="http://politicats.groups.si.umich.edu/" data-send="true" data-width="450" data-show-faces="true"></div>
+   <div id="fb-root">
+		<script>(function(d, s, id) {
+  			var js, fjs = d.getElementsByTagName(s)[0];
+  			if (d.getElementById(id)) return;
+  			js = d.createElement(s); js.id = id;
+  			js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=133977256677621";
+  			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+		</script>
+		</div>
+ 
+ 	<div align="center">
+ 	<h2>Want to see your Politicat on this site? <a href="mailto:mypoliticat@gmail.com?subject=See attached for my Politicat">Send it to us!</a></h2>
+	</div>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+ 
  </body>
 </html>

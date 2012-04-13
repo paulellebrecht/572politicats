@@ -3,38 +3,33 @@
 require_once "init.php";
 
     // If the user hits the submit button then....
-    if ( isset($_POST['Submit']) ) 
+    if ( isset($_POST['Submit']) &&
+		 isset($_POST['q1']) &&
+		 isset($_POST['q2']) &&
+		 isset($_POST['q3']) &&
+		 isset($_POST['q4']) &&
+		 isset($_POST['q5']) &&
+		 isset($_POST['q6']) &&
+		 isset($_POST['q7']) &&
+		 isset($_POST['q8']) &&
+		 isset($_POST['q9']) &&
+		 isset($_POST['q10'])) 
     {
 
-    	// <------------------------------------------------------------------Make sure to check here when adding new questions
-        // Set the values of the question responses as session values
-        // NOTE: For our beta release we will add error checking to see
-        //       whether the user infact answered all the questions 
-        //$_SESSION['q1'] = $_POST['1'];
-        //$_SESSION['q2'] = $_POST['2'];
-		//$_SESSION['q3'] = $_POST['3'];
-        //$_SESSION['q4'] = $_POST['4'];
-        //$_SESSION['q5'] = $_POST['5'];
-                
-        $q1 = $_POST['1'];
-        $q2 = $_POST['2'];
-		$q3 = $_POST['3'];
-        $q4 = $_POST['4'];
-        $q5 = $_POST['5'];
-        $q6 = $_POST['6'];
-        $q7 = $_POST['7'];
-		$q8 = $_POST['8'];
-        $q9 = $_POST['9'];
-        $q10 = $_POST['10'];
+		//These are the users responses to the quiz                
+        $q1 = $_POST['q1'];
+        $q2 = $_POST['q2'];
+		$q3 = $_POST['q3'];
+        $q4 = $_POST['q4'];
+        $q5 = $_POST['q5'];
+        $q6 = $_POST['q6'];
+        $q7 = $_POST['q7'];
+		$q8 = $_POST['q8'];
+        $q9 = $_POST['q9'];
+        $q10 = $_POST['q10'];
         //NEED TO CONVERT TEXT INTO FLOAT VALUES <-------------------------- DO THIS!!!
         
-        // Set the values of the weights set for the various questions responses as session values
-        //$_SESSION['w1'] = $_POST['weight_1'];
-        //$_SESSION['w2'] = $_POST['weight_2'];
-		//$_SESSION['w3'] = $_POST['weight_3'];
-        //$_SESSION['w4'] = $_POST['weight_4'];
-        //$_SESSION['w5'] = $_POST['weight_5'];
-        
+		//These are the users responses for how important each question is to them                
         $w1 = $_POST['weight_1'];
         $w2 = $_POST['weight_2'];
 		$w3 = $_POST['weight_3'];
@@ -45,7 +40,6 @@ require_once "init.php";
 		$w8 = $_POST['weight_8'];
         $w9 = $_POST['weight_9'];
         $w10 = $_POST['weight_10'];
-        //System value for current date and time - will use to find our Anonymous users later
         
 		//What we're using to build the user's fiscal score
 		//Count counts the number of questions answered (for normalization)
@@ -73,8 +67,8 @@ require_once "init.php";
     		
     		$fis_score = $fis_score + ($q_array[$i] * $w_array[$i] * $row[0]);
     		$soc_score = $soc_score + ($q_array[$i] * $w_array[$i] * $row[1]);
-    		$fis_count = $fis_count + abs($row[0]);
-    		$soc_count = $soc_count + abs($row[1]);
+    		$fis_count = $fis_count + abs($row[0]) * $w_array[$i];
+    		$soc_count = $soc_count + abs($row[1]) * $w_array[$i];
     		//echo "<br>Echo in code: fis_score" .$fis_score . " fis_count" . $fis_count . "\n"; //<--------------------------- Echos to print to screen
 			//echo "Echo in code: soc_score" .$soc_score . " soc_count" . $soc_count . "\n";
     	}
@@ -110,7 +104,6 @@ require_once "init.php";
         
         // Redirect to results page
         header( 'Location: results.php' );
-        //header( 'Location: results.php' );        
         // Suspend further execution of this page and wait for redirect
         return;
     }
@@ -133,18 +126,112 @@ require_once "init.php";
    </div>
 
    <div id="bodycontent">
+
+
+<script type="text/javascript">
+	//To validate that the user answered all the questions
+	//alert ("hi"); //Was for debugging
+	
+	//Need to check that field[0].checked is false for ALL of the buttons, then the question wasn't questioned
+	
+	
+	//Gets passed a group of 5 radio buttons for our five options, check whether  
+	//each one is checked
+	function isEmpty(field) {
+
+		//test variable, if all of the radio buttons are empty, then = true;
+		testEmpty = true;
+
+		//Go through each available radio button within a grouping of buttons
+		for (i = 0; i < field.length; i ++)
+		{
+			if(field[i].checked == true)
+			{
+				testEmpty = false;	
+			}
+		}
+		return testEmpty;		
+	}
+
+	
+	function validateFormOnSubmit(theForm) {
+
+		//Start off assuming that there are no empty questions
+		emptyQuestion = false;
+
+		//Because I'm not sure how to iterate though all my quesitons, I'm testing each one
+		//I realize this is not ideal design for this function
+		
+		if(isEmpty(theForm.q1))
+		{
+			emptyQuestion = true;
+		}
+
+		if(isEmpty(theForm.q2))
+		{
+			emptyQuestion = true;
+		}
+		if(isEmpty(theForm.q3))
+		{
+			emptyQuestion = true;
+		}
+		if(isEmpty(theForm.q4))
+		{
+			emptyQuestion = true;
+		}
+		if(isEmpty(theForm.q5))
+		{
+			emptyQuestion = true;
+		}
+		if(isEmpty(theForm.q6))
+		{
+			emptyQuestion = true;
+		}
+		if(isEmpty(theForm.q7))
+		{
+			emptyQuestion = true;
+		}
+		if(isEmpty(theForm.q8))
+		{
+			emptyQuestion = true;
+		}
+		if(isEmpty(theForm.q9))
+		{
+			emptyQuestion = true;
+		}
+		if(isEmpty(theForm.q10))
+		{
+			emptyQuestion = true;
+		}
+
+		//If there are any empty questions, the form does not submit
+		//Since it does not submit the users answers are still on the page
+		//Can't continue without answering all the questions				
+	  	if (emptyQuestion == true) {
+	    	alert("You must answer all of the questions to complete the quiz");
+
+			emptyQuestion = false;
+	    	return false;
+	  	}
+
+	  	emptyQuestion = false;
+	  	return true;
+			
+	}
+     
+</script>
 		
 		<h1>HELLO YOU ARE TOTALLY TAKING A QUIZ</h1>
-		<form method="post">
-		<table>
+		<form method="post" name="theForm" onSubmit="return validateFormOnSubmit(this)">
+		<table id= "quiz_table" border="1">
 			<tr>
                 <th>Question</th>
-                <th></th>
                 <th>Strongly Disagree</th>
                 <th>Somewhat Disagree</th>
                 <th>Neither Agree or Disagree</th>
                 <th>Somewhat Agree</th>
                 <th>Strongly Agree</th>
+                <th>Question Importance</th>
             </tr>
 <?php
     // Create sql command: Want to pull our questions' text from our database
@@ -160,16 +247,16 @@ require_once "init.php";
             <tr>
             	<!-- Building our table with the radio buttons and dropdown for weights -->
                 <td><?php echo($row[1]); ?></td>   
-                <td></td>             
-                <td align="center"><input type="radio" name="<?php echo($row[0]); ?>" value="-1"/></td> 
-                <td align="center"><input type="radio" name="<?php echo($row[0]); ?>" value="-0.5"/></td> 
-                <td align="center"><input type="radio" name="<?php echo($row[0]); ?>" value="0"/></td> 
-                <td align="center"><input type="radio" name="<?php echo($row[0]); ?>" value="0.5"/></td> 
-                <td align="center"><input type="radio" name="<?php echo($row[0]); ?>" value="1"/></td> 
+                             
+                <td align="center"><input type="radio" name="q<?php echo($row[0]); ?>" value="-1"/></td> 
+                <td align="center"><input type="radio" name="q<?php echo($row[0]); ?>" value="-0.5"/></td> 
+                <td align="center"><input type="radio" name="q<?php echo($row[0]); ?>" value="0"/></td> 
+                <td align="center"><input type="radio" name="q<?php echo($row[0]); ?>" value="0.5"/></td> 
+                <td align="center"><input type="radio" name="q<?php echo($row[0]); ?>" value="1"/></td> 
                 <td>
                 	<select name="weight_<?php echo($row[0]); ?>">
- 						<option value="0.3">Important-ish</option>
-  						<option value="1">Manditory</option>
+  						<option value="1">Critical</option>
+ 						<option selected="selected" value="0.3">Important</option>
   						<option value="0.1">Meh?</option>
 					</select>
 				</td>
@@ -179,7 +266,15 @@ require_once "init.php";
 ?>
 		</table>
 		<p>
+		<div align="center">
 		<input type="submit" name="Submit" value="FIND OUT WHICH CAT YOU ARE LIKE!"/>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+
+		</div>
 		</form>
    </div>
  </body>

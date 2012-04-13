@@ -1,16 +1,16 @@
 -- Set up for Database: `politicats`
+-- The new names come from what Michael Hess named our projects database
 
 -- Recreate database
-DROP DATABASE IF EXISTS politicats;
-CREATE DATABASE politicats;
+DROP DATABASE IF EXISTS 572cats;
+CREATE DATABASE 572cats;
 
 -- Enter database
-USE politicats;
+USE 572cats;
 
 
 -- Create user
-DROP USER 'quiz'@'localhost';
-GRANT ALL ON politicats.* TO 'quiz'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL ON 572cats.* TO '572cats'@'localhost' IDENTIFIED BY '53727f39e';
 
 -- ------------------------ CREATING TABLES -------------------------
 
@@ -92,12 +92,19 @@ CREATE TABLE answers (
 
 -- ------- Create politicats image table
 -- This table will hold all of the cat images we have 
-CREATE TABLE catpics (
+CREATE TABLE politicat (
 	id		        INTEGER         NOT NULL    AUTO_INCREMENT,
 	catpic          VARCHAR(100)    NOT NULL,
-	scoreMin_fiscal FLOAT           NOT NULL,
-	scoreMax_fiscal FLOAT           NOT NULL,
-	scoreMin_social FLOAT           NOT NULL,
-	scoreMax_social FLOAT           NOT NULL,
+	name	        VARCHAR(100)    NOT NULL,
+	score_fiscal FLOAT           NOT NULL,
+	score_social FLOAT           NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB; 
+
+-- Insert Politicat Data
+INSERT INTO politicat (catpic, name, score_fiscal, score_social) VALUES
+('ChairmanMeow2.png', 'Chairman Meow', -1, 1),
+('Palin_cat.png','Feline Palin', .7, .9),
+('michael_meowr.png','Michael Meowr', -0.5, -1),
+('ronpaw2.png','Ron Paw', .9, -.9),
+('rush_limpaw_final.png','Rush Limpaw', .9, .9);

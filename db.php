@@ -1,8 +1,8 @@
 <?php
     define("HOSTNAME", "localhost");
-    define("DB_NAME", "politicats");
-    define("DB_USER", "quiz");
-    define("DB_PASS", "password"); 
+    define("DB_NAME", "572cats");
+    define("DB_USER", "572cats");
+    define("DB_PASS", "53727f39e"); 
     // Attempt connection to database Server
     mysql_connect(HOSTNAME, DB_USER, DB_PASS) or 
         die('ERROR: Fail to connect to database server!');
