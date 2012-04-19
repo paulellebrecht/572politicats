@@ -108,53 +108,28 @@
 	<div id="picture">
 
 
-<?php	
-	echo ("<p><h3>" . $cat_name . "</h3><img src=" . $cat_pic);
-?>		
+		<?php	
+			echo ("<p><h3>" . $cat_name . "</h3><img src=" . $cat_pic);
+		?>		
 		width="500" height="auto"></p> 
 	</div>
 
    <!-- JAVASCRIPT FOR GOOGLE CHART -->
    <div id="chart_div" style="position:static; width: 500px; height: 500px;"></div>
    
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
+
    
    
- 	<div align="center">
+
+
+   </div>
+ 	
+	<div id="bottomtext">
  	<h2>Want to see your Politicat on this site? <a href="mailto:mypoliticat@gmail.com?subject=See attached for my Politicat">Send it to us!</a></h2>
 	<br>
 	<div class="fb-like" data-href="http://politicats.groups.si.umich.edu" data-send="true" data-width="450" data-show-faces="true"></div>
 	</div>
-
-   </div>
-
+   
    <br>
    <br>
    <br>

@@ -18,7 +18,7 @@
 
    <div id="bodycontent">
 		
-		<h1>Welcome to Politicats.org!</h1>
+		<h1>Welcome to Politicats!</h1>
 
 		<p>In the spirit of the up-coming elections, the Politicats Quiz maps your political beliefs onto two 
 		axes (social and fiscal political scales) in order to help you visualize your political positions. 

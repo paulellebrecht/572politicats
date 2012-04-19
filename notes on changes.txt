@@ -1,0 +1,13 @@
+4/17 
+
+Paul - 10 am	
+
+made changes on the css to center bottom text
+made a new div for bottom text with corresponding piece in css file
+trying to figure out why FB won't show up in firefox
+
+Paul 12 pm
+
+Paul hates CSS.  I wanted to make it easier to revert so I made a new folder.  
+
+Can't get like button to float center.  Split it off from the rest of the stuff and move the bottom text out of the body to hopefully make it easier to work with.  
